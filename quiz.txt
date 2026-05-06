@@ -1,0 +1,76 @@
+Public Class Form1
+    ' Variables to track the user's score and the current question number
+    Dim score As Integer = 0
+    Dim currentQuestion As Integer = 1
+    Dim totalQuestions As Integer = 3
+
+    ' This runs as soon as the application opens
+    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        LoadQuestion(currentQuestion)
+    End Sub
+
+    ' This runs when the user clicks the "Next" button
+    Private Sub btnNext_Click(sender As Object, e As EventArgs) Handles btnNext.Click
+        ' First, check if the user selected the correct answer
+        CheckAnswer(currentQuestion)
+
+        ' Move to the next question
+        currentQuestion += 1
+
+        ' Load the next question or end the quiz if all questions are answered
+        If currentQuestion <= totalQuestions Then
+            LoadQuestion(currentQuestion)
+        Else
+            MessageBox.Show("Quiz completed! Your score is: " & score & " out of " & totalQuestions, "Quiz Results")
+            Me.Close() ' Closes the application
+        End If
+    End Sub
+
+    ' Method to update the text of the Label and RadioButtons
+    Private Sub LoadQuestion(questionNum As Integer)
+        ' Clear previous selections
+        RadioButton1.Checked = False
+        RadioButton2.Checked = False
+        RadioButton3.Checked = False
+
+        ' Set the questions and three options based on the current question number
+        Select Case questionNum
+            Case 1
+                lblQuestion.Text = "1. What is the capital of France?"
+                RadioButton1.Text = "Berlin"
+                RadioButton2.Text = "Paris"
+                RadioButton3.Text = "Madrid"
+            Case 2
+                lblQuestion.Text = "2. Which planet is known as the Red Planet?"
+                RadioButton1.Text = "Mars"
+                RadioButton2.Text = "Jupiter"
+                RadioButton3.Text = "Venus"
+            Case 3
+                lblQuestion.Text = "3. How many legs does a spider have?"
+                RadioButton1.Text = "Six"
+                RadioButton2.Text = "Eight"
+                RadioButton3.Text = "Ten"
+        End Select
+        
+        ' Update button text on the last question
+        If questionNum = totalQuestions Then
+            btnNext.Text = "Submit Quiz"
+        End If
+    End Sub
+
+    ' Method to check the selected RadioButton against the correct answer
+    Private Sub CheckAnswer(questionNum As Integer)
+        Select Case questionNum
+            Case 1
+                ' Paris is the correct answer (RadioButton2)
+                If RadioButton2.Checked Then score += 1
+            Case 2
+                ' Mars is the correct answer (RadioButton1)
+                If RadioButton1.Checked Then score += 1
+            Case 3
+                ' Eight is the correct answer (RadioButton2)
+                If RadioButton2.Checked Then score += 1
+        End Select
+    End Sub
+
+End Class
